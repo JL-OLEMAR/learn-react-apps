@@ -1,3 +1,4 @@
 packages:
-  - projects/*
+  # todos los proyectos dentro de projects son paquetes
+  - 'projects/**'
 
