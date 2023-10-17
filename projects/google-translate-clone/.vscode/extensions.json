@@ -5,6 +5,7 @@
     "esbenp.prettier-vscode",
     "dsznajder.es7-react-js-snippets",
     "usernamehw.errorlens",
-    "wallabyjs.console-ninja"
+    "wallabyjs.console-ninja",
+    "streetsidesoftware.code-spell-checker"
   ]
 }
