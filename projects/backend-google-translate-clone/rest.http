@@ -1,6 +1,14 @@
 
-###
+### Within params
 GET http://localhost:3001/api/translate
 
-###
+
+### With params
+GET http://localhost:3001/api/translate
+    ?fromLanguage=en
+    &toLanguage=es
+    &text=Hello
+
+
+### 404 page
 GET http://localhost:3001/

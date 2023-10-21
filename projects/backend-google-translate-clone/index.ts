@@ -1,7 +1,6 @@
-import cors from 'cors'
-import 'dotenv/config'
-import express, { type Request, type Response } from 'express'
-import { router as translateRouter } from './routes/translateRouter'
+import cors from 'cors';
+import express, { type Request, type Response } from 'express';
+import { router as translateRouter } from './routes/translate-router';
 
 // Environment variables
 const PORT = process.env.PORT ?? 4001
