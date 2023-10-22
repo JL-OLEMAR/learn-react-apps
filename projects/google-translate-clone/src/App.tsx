@@ -3,9 +3,9 @@ import { Button, Col, Container, Row, Stack } from 'react-bootstrap'
 
 import { useEffect } from 'react'
 import './App.css'
-import { ArrowsIcon, LanguageSelector, TextArea } from './components'
-import { AUTO_LANGUAGE } from './constants'
-import { useStore } from './hooks/useStore'
+import { ArrowsIcon, ClipboardIcon, LanguageSelector, SpeakerIcon, TextArea } from './components'
+import { AUTO_LANGUAGE, VOICE_FOR_LANGUAGE } from './constants'
+import { useDebounce, useStore } from './hooks'
 import { translate } from './services/translate'
 import { SectionType } from './types.d'
 
@@ -23,16 +23,29 @@ export default function App() {
     setResult
   } = useStore()
 
-  useEffect(() => {
-    if (fromText === '') return
+  const debounceFromText = useDebounce(fromText, 300)
 
-    translate({ fromLanguage, toLanguage, fromText })
+  useEffect(() => {
+    if (debounceFromText === '') return
+
+    translate({ fromLanguage, toLanguage, fromText: debounceFromText })
       .then((result) => {
         if (result == null) return
         setResult(result)
       })
       .catch(() => { setResult('Error') })
-  }, [fromText, fromLanguage, toLanguage])
+  }, [debounceFromText, fromLanguage, toLanguage])
+
+  const handleClipboard = () => {
+    navigator.clipboard.writeText(result).catch(() => { })
+  }
+
+  const handleSpeaker = () => {
+    const utterance = new SpeechSynthesisUtterance(result)
+    utterance.lang = VOICE_FOR_LANGUAGE[toLanguage]
+    utterance.rate = 0.9
+    speechSynthesis.speak(utterance)
+  }
 
   return (
     <Container fluid>
@@ -74,12 +87,29 @@ export default function App() {
               value={toLanguage}
               onChange={setToLanguage}
             />
-            <TextArea
-              type={SectionType.To}
-              value={result}
-              isLoading={isLoading}
-              onChange={setResult}
-            />
+            <div style={{ position: 'relative' }}>
+              <TextArea
+                type={SectionType.To}
+                value={result}
+                isLoading={isLoading}
+                onChange={setResult}
+              />
+              <div style={{ position: 'absolute', bottom: 0, left: 0, display: 'flex' }}>
+                <Button
+                  variant='link'
+                  onClick={handleClipboard}
+                >
+                  <ClipboardIcon />
+                </Button>
+
+                <Button
+                  variant='link'
+                  onClick={handleSpeaker}
+                >
+                  <SpeakerIcon />
+                </Button>
+              </div>
+            </div>
           </Stack>
         </Col>
       </Row>
