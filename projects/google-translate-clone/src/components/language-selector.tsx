@@ -20,7 +20,7 @@ export function LanguageSelector({ onChange, type, value }: Props) {
       aria-label='Select Language'
       style={{ width: 'auto' }}
     >
-      {type === SectionType.From && <option value={AUTO_LANGUAGE}>Detect language</option>}
+      {type === SectionType.From && <option value={AUTO_LANGUAGE}>Select language</option>}
       {
         Object.entries(SUPPORTED_LANGUAGES).map(([key, literal]) => (
           <option value={key} key={key}>

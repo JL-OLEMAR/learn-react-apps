@@ -26,33 +26,45 @@ const reducer = (state: State, action: Action) => {
   }
 
   if (type === 'SET_FROM_LANGUAGE') {
+    if (state.fromLanguage === action.payload) return state
+    const isLoading = state.fromText !== ''
+
     return {
       ...state,
-      fromLanguage: action.payload
+      fromLanguage: action.payload,
+      result: '',
+      isLoading
     }
   }
 
   if (type === 'SET_TO_LANGUAGE') {
+    if (state.toLanguage === action.payload) return state
+    const isLoading = state.fromText !== ''
+
     return {
       ...state,
-      toLanguage: action.payload
+      toLanguage: action.payload,
+      result: '',
+      isLoading
     }
   }
 
   if (type === 'SET_FROM_TEXT') {
+    const isLoading = action.payload !== ''
+
     return {
       ...state,
-      isLoading: true,
       fromText: action.payload,
-      result: ''
+      result: '',
+      isLoading
     }
   }
 
   if (type === 'SET_RESULT') {
     return {
       ...state,
-      isLoading: false,
-      result: action.payload
+      result: action.payload,
+      isLoading: false
     }
   }
 
