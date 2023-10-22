@@ -1,4 +1,5 @@
 import type { Request, Response } from 'express';
+import { SUPPORTED_LANGUAGES } from '../constants';
 import { getTranslate } from '../services/translate';
 import type { FromLanguage, Language } from '../types.d';
 // import OpenAI from 'openai';
@@ -49,15 +50,20 @@ export const translateByRapid = async (req: Request, res: Response) => {
   if (toLanguage == null) return res.status(400).json('Missing toLanguage')
   if (text == null) return res.status(400).json('Missing text')
   if (fromLanguage === toLanguage) return res.status(200).json({ text })
+  if (fromLanguage === 'auto' && toLanguage === 'en') return res.status(200).json({ text })
 
   try {
     // Values supported languages
     // const fromCode = fromLanguage === 'auto' ? 'en' : SUPPORTED_LANGUAGES[fromLanguage]
     // const toCode = SUPPORTED_LANGUAGES[toLanguage]
+    const toCode = Object.keys(SUPPORTED_LANGUAGES).find((key) => key === toLanguage) as Language
+    const fromCode = (fromLanguage !== 'auto')
+      ? Object.keys(SUPPORTED_LANGUAGES).find((key) => key === fromLanguage) as FromLanguage
+      : 'en'
 
-    const { data } = await getTranslate({ text, fromLanguage, toLanguage })
+    if (fromCode == null || toCode == null) return res.status(400).json('Invalid language')
+    const { data } = await getTranslate({ text, fromLanguage: fromCode, toLanguage: toCode })
     if (data == null) return res.status(400).json('No data')
-
     const textResult = data.translations[0].translatedText
 
     // // Model: Chat completions API
