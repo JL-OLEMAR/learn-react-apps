@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "amazonwebservices.aws-toolkit-vscode",
+    "streetsidesoftware.code-spell-checker",
+    "wallabyjs.console-ninja",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode"
+  ]
+}
