@@ -5,6 +5,7 @@ import { type User } from './types.d'
 
 export default function App() {
   const [users, setUsers] = useState<User[]>([])
+  const [showColors, setShowColors] = useState(false)
 
   useEffect(() => {
     fetch('https://randomuser.me/api?results=100')
@@ -13,10 +14,25 @@ export default function App() {
       .catch((err) => { console.log(err) })
   }, [])
 
+  const toggleColors = () => {
+    setShowColors(!showColors)
+  }
+
   return (
     <div className='App'>
       <h1>Prueba técnica</h1>
-      <UserList users={users} />
+      <header>
+        <button onClick={toggleColors} type='button'>
+          Rows coloring
+        </button>
+      </header>
+
+      <main>
+        <UserList
+          users={users}
+          showColors={showColors}
+        />
+      </main>
     </div>
   )
 }
