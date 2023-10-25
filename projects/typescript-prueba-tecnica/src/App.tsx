@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import './App.css'
+import { UserList } from './components/user-list'
 import { type User } from './types.d'
 
 export default function App() {
@@ -15,9 +16,7 @@ export default function App() {
   return (
     <div className='App'>
       <h1>Prueba técnica</h1>
-      {
-        JSON.stringify(users)
-      }
+      <UserList users={users} />
     </div>
   )
 }
