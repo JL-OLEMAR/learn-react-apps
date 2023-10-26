@@ -7,6 +7,7 @@ export default function App() {
   const [users, setUsers] = useState<User[]>([])
   const [showColors, setShowColors] = useState(false)
   const [sortByCountry, setSortByCountry] = useState(false)
+  const [filterCountry, setFilterCountry] = useState<string | null>(null)
   const originalUsers = useRef<User[]>([])
 
   useEffect(() => {
@@ -36,10 +37,14 @@ export default function App() {
     setUsers(originalUsers.current)
   }
 
+  const filteredUsers = (filterCountry != null && filterCountry.length > 0)
+    ? users.filter((({ location }) => location.country.toLowerCase().includes(filterCountry.toLowerCase())))
+    : users
+
   // sortUser asc
   const sortedUsers = sortByCountry
-    ? users.toSorted((a, b) => a.location.country.localeCompare(b.location.country))
-    : users
+    ? filteredUsers.toSorted((a, b) => a.location.country.localeCompare(b.location.country))
+    : filteredUsers
 
   return (
     <div className='App'>
@@ -56,6 +61,12 @@ export default function App() {
         <button onClick={handleReset} type='button'>
           Reset users
         </button>
+
+        <input
+          type="text"
+          placeholder='Filter by country'
+          onChange={(e) => { setFilterCountry(e.target.value) }}
+        />
       </header>
 
       <main>
