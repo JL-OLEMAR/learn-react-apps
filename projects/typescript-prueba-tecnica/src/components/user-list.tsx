@@ -6,8 +6,6 @@ interface Props {
 }
 
 export function UserList({ users, showColors }: Props) {
-  // console.log({ users[0] })
-
   return (
     <table width='100%'>
       <thead>

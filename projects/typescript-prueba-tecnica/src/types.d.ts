@@ -1,3 +1,11 @@
+// Add Support for Array.toSorted() method in TypeScript.
+declare global {
+  interface Array<T> {
+    // eslint-disable-next-line @typescript-eslint/method-signature-style
+    toSorted(compareFn: (a: T, b: T) => number): T[]
+  }
+}
+
 export interface IRandomUser {
   results: User[]
   info: Info
