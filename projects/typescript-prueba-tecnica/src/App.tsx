@@ -23,6 +23,11 @@ export default function App() {
     setSortByCountry(prevState => !prevState)
   }
 
+  const handleDelete = (email: string) => {
+    const filteredUsers = users.filter((user) => user.email !== email)
+    setUsers(filteredUsers)
+  }
+
   // sortUser asc
   const sortedUsers = sortByCountry
     ? users.toSorted((a, b) => a.location.country.localeCompare(b.location.country))
@@ -45,6 +50,7 @@ export default function App() {
         <UserList
           users={sortedUsers}
           showColors={showColors}
+          deleteUser={handleDelete}
         />
       </main>
     </div>
