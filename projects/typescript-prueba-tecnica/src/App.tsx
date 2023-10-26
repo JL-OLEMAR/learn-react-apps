@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import './App.css'
 import { UserList } from './components/user-list'
-import { type User } from './types.d'
+import type { IRandomUser, User } from './types.d'
 
 export default function App() {
   const [users, setUsers] = useState<User[]>([])
@@ -13,9 +13,9 @@ export default function App() {
   useEffect(() => {
     fetch('https://randomuser.me/api?results=100')
       .then((res) => res.json())
-      .then((data) => {
-        setUsers(data.results)
-        originalUsers.current = data.result
+      .then((res: IRandomUser) => {
+        setUsers(res.results)
+        originalUsers.current = res.results
       })
       .catch((err) => { console.log(err) })
   }, [])
@@ -37,14 +37,19 @@ export default function App() {
     setUsers(originalUsers.current)
   }
 
-  const filteredUsers = (filterCountry != null && filterCountry.length > 0)
-    ? users.filter((({ location }) => location.country.toLowerCase().includes(filterCountry.toLowerCase())))
-    : users
+  const filteredUsers = useMemo(() => {
+    console.log('filteredUsers')
+    return (filterCountry != null && filterCountry.length > 0)
+      ? users.filter(((user) => user.location.country.toLowerCase().includes(filterCountry.toLowerCase())))
+      : users
+  }, [users, filterCountry])
 
-  // sortUser asc
-  const sortedUsers = sortByCountry
-    ? filteredUsers.toSorted((a, b) => a.location.country.localeCompare(b.location.country))
-    : filteredUsers
+  const sortedUsers = useMemo(() => {
+    console.log('sortedUsers')
+    return sortByCountry
+      ? filteredUsers.toSorted((a, b) => a.location.country.localeCompare(b.location.country))
+      : filteredUsers
+  }, [filteredUsers, sortByCountry])
 
   return (
     <div className='App'>
