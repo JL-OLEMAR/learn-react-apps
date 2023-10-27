@@ -16,10 +16,22 @@ input:hover {
   border-color: #646cff;
 }
 
+header {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 48px;
+  justify-content: center;
+  align-items: center;
+}
+
 .table--showColors tr:nth-child(odd) {
   background-color: #333;
 }
 
 .table--showColors tr:nth-child(even) {
   background-color: #555;
+}
+
+.pointer {
+  cursor: pointer;
 }
